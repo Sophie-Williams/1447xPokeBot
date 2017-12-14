@@ -1,5 +1,7 @@
 # 1447xPokeBot
-Fun 'Pokemon Go' type game for discord servers. 
+Fun 'Pokemon Go' type game for discord servers.
+
+Programmed by rkhous, CP additions for hatches, catches, and raids by ibuckshot5 (Entropy)
 
 Runs on Python 3
 
