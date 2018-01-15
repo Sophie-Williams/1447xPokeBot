@@ -21,7 +21,7 @@ def calculate_cp(pokemon, level, iv_attack, iv_defense, iv_stamina):
          * math.sqrt((stats['stamina'] + iv_stamina))) / 10)
 
 def find_pokemon_id(name):
-    # Find 'fucky' names
+    # Find names causing issues returning Pokedex entry
     if name == 'Nidoran-F':
         return 29
     elif name == 'Nidoran-M':
