@@ -107,12 +107,6 @@ legendaries = (
 
 unown_forms = ()
 
-battle_pokemon = (
-    "Articuno",
-    "Moltres",
-    "Zapdos"
-)
-
 test_pokemans = (
              "Bulbasaur", "Ivysaur", "Venusaur", "Charmander",
              "Charmeleon", "Charizard", "Squirtle", "Wartortle",
