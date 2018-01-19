@@ -60,7 +60,10 @@ async def on_message(message):
         return
 @client.event
 async def on_message(message):
-    if random.randint(0,200) <= 3:
+    if random.randint(0,200) <= 3 or message.content.startswith('$search'):
+        async def on_message(message):
+            if message.author == client.user:
+                return
         pokechoice = (random.choice(pokemans))
         pokeid = find_pokemon_id(pokechoice)
         level = random.randint(1, 30)
