@@ -60,6 +60,34 @@ async def on_message(message):
         return
 @client.event
 async def on_message(message):
+        if message.content.startswith('$100'):
+        if random.randint(1,300) <= 299:
+            hundochoice = (random.choice(pokemans))
+        else:
+            hundochoice = random.choice(legendaries)
+        if message.author == client.user:
+            return
+        attack = random.randint(0, 15)
+        defense = random.randint(0, 15)
+        hp = random.randint(0, 15)
+        IV = ((attack + defense + hp) / 45) * 100
+        roll_count = 0
+        end_goal = 100.0
+        while IV != end_goal:
+            end_goal = 100.0
+            attack = random.randint(0, 15)
+            defense = random.randint(0, 15)
+            hp = random.randint(0, 15)
+            IV = ((attack + defense + hp) / 45) * 100
+            roll_count += 1
+        async def hundo_poke():
+            hundo_poke = discord.Embed(
+                title="You rolled a hundo!",
+                description="Pokemon caught before 100% encounter:\n```" + str(roll_count) + '```Pokemon rolled: ```' + str(hundochoice) +
+                            '``` IV: 100% (15/15/15)', color=3447003)
+            hundo_poke.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(hundochoice).lower() + ".gif")
+            await client.send_message(message.channel, embed=hundo_poke)
+        await hundo_poke()
     if random.randint(0,200) <= 3 or message.content.startswith('$search'):
         async def on_message(message):
             if message.author == client.user:
