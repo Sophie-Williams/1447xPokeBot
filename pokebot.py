@@ -83,7 +83,7 @@ async def on_message(message):
         async def hundo_poke():
             hundo_poke = discord.Embed(
                 title="You rolled a hundo!",
-                description="Pokemon caught before 100% encounter:\n```" + str(roll_count) + '```Pokemon rolled: ```' + str(hundochoice) +
+                description="Encounters before 100% encounter:\n```" + str(roll_count) + '```Pokemon rolled: ```' + str(hundochoice) +
                             '``` IV: 100% (15/15/15)', color=3447003)
             hundo_poke.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(hundochoice).lower() + ".gif")
             await client.send_message(message.channel, embed=hundo_poke)
