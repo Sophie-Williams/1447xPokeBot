@@ -105,6 +105,10 @@ async def on_message(message):
         highiv = "Wow, your pokemon has great IV's! It's a keeper!"
         cp = calculate_cp(pokeid, level, attack, defense, hp)
         if random.randint(1,200) < 197:
+            def log_fled():
+                print(str(message.author) + ' had a ' + str(round(IV,1)) + '% ' + str(pokechoice) + ' run away from them!')
+            def log_caught():
+                print(str(message.author) + ' caught a ' + str(round(IV,1)) + '% ' + str(pokechoice) + '!')
             def is_user(message):
                 return message.author == message.author
             def is_pokebot(message):
@@ -134,6 +138,7 @@ async def on_message(message):
                     await client.send_message(message.channel, embed=embed_normal_fled)
                 await client.purge_from(message.channel, limit=1, check=is_user)
                 if throw_rate <= 30:
+                    print('throw rate <30 triggered for ' + str(message.author))
                     await client.send_message(message.channel, "throwing pokéball...")
                     await asyncio.sleep(0.5)
                     await client.purge_from(message.channel, limit=1, check=is_pokebot)
@@ -145,6 +150,7 @@ async def on_message(message):
                     if random.randint(1, 100) < 3:
                         await client.purge_from(message.channel, limit=1, check=is_pokebot)
                         await normal_fled()
+                        log_fled()
                     else:
                         await client.purge_from(message.channel, limit=1, check=is_pokebot)
                         await client.send_file(message.channel, "images/shake2.png")
@@ -153,15 +159,18 @@ async def on_message(message):
                         if random.randint(1, 100) < 2:
                             await client.purge_from(message.channel, limit=1, check=is_pokebot)
                             await normal_fled()
+                            log_fled()
                         else:
                             await client.purge_from(message.channel, limit=1, check=is_pokebot)
                             await client.send_file(message.channel, "images/shake.png")
                             await asyncio.sleep(0.5)
                             await client.purge_from(message.channel, limit=1, check=is_pokebot)
                             await normal_caught()
+                            log_caught()
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
                 elif 31 <= throw_rate <= 75:
+                    print('throw rate >31 <75 triggered for ' + str(message.author))
                     await client.send_message(message.channel, "throwing pokéball...")
                     await asyncio.sleep(0.5)
                     await client.purge_from(message.channel, limit=1, check=is_pokebot)
@@ -173,6 +182,7 @@ async def on_message(message):
                     if random.randint(1, 100) < 8:
                         await client.purge_from(message.channel, limit=1, check=is_pokebot)
                         await normal_fled()
+                        log_fled()
                     else:
                         await client.purge_from(message.channel, limit=1, check=is_pokebot)
                         await client.send_file(message.channel, "images/shake2.png")
@@ -180,15 +190,18 @@ async def on_message(message):
                         if random.randint(1, 100) < 6:
                             await client.purge_from(message.channel, limit=1, check=is_pokebot)
                             await normal_fled()
+                            log_fled()
                         else:
                             await client.purge_from(message.channel, limit=1, check=is_pokebot)
                             await client.send_file(message.channel, "images/shake.png")
                             await asyncio.sleep(0.5)
                             await client.purge_from(message.channel, limit=1, check=is_pokebot)
                             await normal_caught()
+                            log_caught()
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
                 elif throw_rate >= 76:
+                    print('throw rate 76+ triggered for ' + str(message.author))
                     await client.send_message(message.channel, "throwing pokéball...")
                     await asyncio.sleep(0.5)
                     await client.purge_from(message.channel, limit=1, check=is_pokebot)
@@ -200,6 +213,7 @@ async def on_message(message):
                     if random.randint(1, 100) < 9:
                         await client.purge_from(message.channel, limit=1, check=is_pokebot)
                         await normal_fled()
+                        log_fled()
                     else:
                         await client.purge_from(message.channel, limit=1, check=is_pokebot)
                         await client.send_file(message.channel, "images/shake2.png")
@@ -207,12 +221,14 @@ async def on_message(message):
                         if random.randint(1, 100) < 8:
                             await client.purge_from(message.channel, limit=1, check=is_pokebot)
                             await normal_fled()
+                            log_fled()
                         else:
                             await client.purge_from(message.channel, limit=1, check=is_pokebot)
                             await client.send_file(message.channel, "images/shake.png")
                             await asyncio.sleep(0.5)
                             await client.purge_from(message.channel, limit=1, check=is_pokebot)
                             await normal_caught()
+                            log_caught()
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
         else:
