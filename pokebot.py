@@ -138,7 +138,7 @@ async def on_message(message):
                     await client.send_message(message.channel, embed=embed_normal_fled)
                 await client.purge_from(message.channel, limit=1, check=is_user)
                 if throw_rate <= 30:
-                    print('throw rate <30 triggered for ' + str(message.author))
+                    print('excellent throw triggered for ' + str(message.author))
                     await client.send_message(message.channel, "throwing pokéball...")
                     await asyncio.sleep(0.5)
                     await client.purge_from(message.channel, limit=1, check=is_pokebot)
@@ -170,7 +170,7 @@ async def on_message(message):
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
                 elif 31 <= throw_rate <= 75:
-                    print('throw rate >31 <75 triggered for ' + str(message.author))
+                    print('great throw triggered for ' + str(message.author))
                     await client.send_message(message.channel, "throwing pokéball...")
                     await asyncio.sleep(0.5)
                     await client.purge_from(message.channel, limit=1, check=is_pokebot)
@@ -201,7 +201,7 @@ async def on_message(message):
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
                 elif throw_rate >= 76:
-                    print('throw rate 76+ triggered for ' + str(message.author))
+                    print('nice throw triggered for ' + str(message.author))
                     await client.send_message(message.channel, "throwing pokéball...")
                     await asyncio.sleep(0.5)
                     await client.purge_from(message.channel, limit=1, check=is_pokebot)
