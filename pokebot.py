@@ -270,7 +270,6 @@ async def on_message(message):
                         description=message.author.name + " tried to catch the shiny " + str(pokechoice) + ", but it has ran away!", color=0xef101e)
                     embed_shiny_fled.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(pokechoice).lower() + ".gif")
                     await client.send_message(message.channel, embed=embed_shiny_fled)
-                await client.purge_from(message.channel, limit=1, check=is_user)
                 if throw_rate <= 30:
                     print('excellent throw triggered for ' + str(message.author))
                     throwing_pokeball = await client.send_message(message.channel, "throwing pokéball...")
