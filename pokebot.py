@@ -87,7 +87,17 @@ async def on_message(message):
                             '``` IV: 100% (15/15/15)', color=3447003)
             hundo_poke.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(hundochoice).lower() + ".gif")
             await client.send_message(message.channel, embed=hundo_poke)
-        await hundo_poke()
+        async def shiny_hundo():
+            shiny_hundo = discord.Embed(
+                title="You rolled a SHINY hundo!",
+                description="User: " + str(message.author.name) + "\n\nEncounters before 100% encounter:\n```" + str(roll_count) + '```Shiny pokemon rolled: ```' + str(hundochoice) +
+                            '``` IV: 100% (15/15/15)', color=3447003)
+            shiny_hundo.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(hundochoice).lower() + ".gif")
+            await client.send_message(message.channel, embed=shiny_hundo)
+         if random.randint(1,300) <= 290:
+            await hundo_poke()
+         else:
+            await shiny_hundo()
     if random.randint(0,200) <= 3 or message.content.startswith('$search'):
         async def on_message(message):
             if message.author == client.user:
