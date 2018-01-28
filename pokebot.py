@@ -2,13 +2,26 @@
 import random
 import asyncio
 import discord
-from discord.ext import commands
-from pokemans import pokemans, legendaries, battle_pokemon, base_stats, cp_multipliers, pokejson
 import logging
 import math
 import json
+import sqlite3
+import os
+
+from discord.ext import commands
+from pokemans import pokemans, legendaries, base_stats, cp_multipliers, pokejson
+from shutil import copyfile
 
 client = discord.Client()
+
+# If .db file not there
+if not os.path.isfile('./pokemon.db'):
+        print('DB file not detected, copying empty.')
+        copyfile('./pokemon.emptydb', './pokemon.db')
+
+# Init DB
+db = sqlite3.connect('pokemon.db')
+cursor = db.cursor()
 
 # Method to calculate CP.
 def calculate_cp(pokemon, level, iv_attack, iv_defense, iv_stamina):
@@ -41,6 +54,13 @@ def find_pokemon_id(name):
 
         return 0
 
+
+def store_pokemon(params):
+    pokemon, type, level, cp, iv, attack, defense, hp, owner = params
+    query = 'INSERT INTO pokemon(`pokemon`, `type`, `level`, `cp`, `iv`, `attack`, `defense`, `hp`, `owner`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    cursor.execute(query, (pokemon, type, level, cp, iv, attack, defense, hp, owner))
+    db.commit()
+
 @client.event
 async def on_ready():
     print("Connected!")
@@ -58,22 +78,27 @@ bot = commands.Bot(command_prefix='$')
 async def on_message(message):
     if message.author == client.user:
         return
+
 @client.event
 async def on_message(message):
-        if message.content.startswith('$100'):
+    if message.content.startswith('$100'):
         if random.randint(1,300) <= 299:
             hundochoice = (random.choice(pokemans))
         else:
             hundochoice = random.choice(legendaries)
         if message.author == client.user:
             return
+        hp = random.randint(0, 15)
         attack = random.randint(0, 15)
         defense = random.randint(0, 15)
-        hp = random.randint(0, 15)
         IV = ((attack + defense + hp) / 45) * 100
         roll_count = 0
         end_goal = 100.0
         while IV != end_goal:
+            if random.randint(1, 300) <= 299:
+                hundochoice = (random.choice(pokemans))
+            else:
+                hundochoice = random.choice(legendaries)
             end_goal = 100.0
             attack = random.randint(0, 15)
             defense = random.randint(0, 15)
@@ -83,7 +108,7 @@ async def on_message(message):
         async def hundo_poke():
             hundo_poke = discord.Embed(
                 title="You rolled a hundo!",
-                description="Encounters before 100% encounter:\n```" + str(roll_count) + '```Pokemon rolled: ```' + str(hundochoice) +
+                description="User: " + str(message.author.name) + "\n\nEncounters before 100% encounter:\n```" + str(roll_count) + '```Pokemon rolled: ```' + str(hundochoice) +
                             '``` IV: 100% (15/15/15)', color=3447003)
             hundo_poke.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(hundochoice).lower() + ".gif")
             await client.send_message(message.channel, embed=hundo_poke)
@@ -94,9 +119,9 @@ async def on_message(message):
                             '``` IV: 100% (15/15/15)', color=3447003)
             shiny_hundo.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(hundochoice).lower() + ".gif")
             await client.send_message(message.channel, embed=shiny_hundo)
-         if random.randint(1,300) <= 290:
+        if random.randint(1,300) <= 290:
             await hundo_poke()
-         else:
+        else:
             await shiny_hundo()
     if random.randint(0,200) <= 3 or message.content.startswith('$search'):
         async def on_message(message):
@@ -114,20 +139,17 @@ async def on_message(message):
         throw_rate = random.randint(1, 100)
         highiv = "Wow, your pokemon has great IV's! It's a keeper!"
         cp = calculate_cp(pokeid, level, attack, defense, hp)
+        type = 'Normal'
         if random.randint(1,200) < 197:
             def log_fled():
                 print(str(message.author) + ' had a ' + str(round(IV,1)) + '% ' + str(pokechoice) + ' run away from them!')
             def log_caught():
                 print(str(message.author) + ' caught a ' + str(round(IV,1)) + '% ' + str(pokechoice) + '!')
-            def is_user(message):
-                return message.author == message.author
-            def is_pokebot(message):
-                return message.author == client.user
             async def spawn_pokes():
                 embed_spawn = discord.Embed(
                     title="A wild " + str(pokechoice) + " has appeared!",
                     description="CP: " + str(cp) + "\nTo catch the wild pokemon, type $throw", color = 3447003)
-                embed_spawn.set_thumbnail(url="https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/" + str(pokechoice).lower() + ".png")
+                embed_spawn.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(pokechoice).lower() + ".gif")
                 await client.send_message(message.channel, embed=embed_spawn)
             await spawn_pokes()
             if client.wait_for_message(author=None, content="$throw"):
@@ -138,13 +160,13 @@ async def on_message(message):
                     embed_normal_caught = discord.Embed(
                         title= message.author.name + " caught the wild " + str(pokechoice) + "!",
                         description="Name: " + str(pokechoice) + ".\nLevel: "+ str(level) + "\nCP: " + str(cp) + "\nIV: " + str(round(IV, 1)) + "% (" + str(attack) + "/" + str(defense) + "/" + str(hp) + ")", color=0x20ef25)
-                    embed_normal_caught.set_thumbnail(url="https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/" + str(pokechoice).lower() + ".png")
+                    embed_normal_caught.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(pokechoice).lower() + ".gif")
                     await client.send_message(message.channel, embed=embed_normal_caught)
                 async def normal_fled():
                     embed_normal_fled = discord.Embed(
                         title= "The wild " + str(pokechoice) + " has fled!",
                         description=message.author.name + " tried to catch the wild " + str(pokechoice) + ", but it has ran away!", color=0xef101e)
-                    embed_normal_fled.set_thumbnail(url="https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/" + str(pokechoice).lower() + ".png")
+                    embed_normal_fled.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(pokechoice).lower() + ".gif")
                     await client.send_message(message.channel, embed=embed_normal_fled)
                 if throw_rate <= 30:
                     print('excellent throw triggered for ' + str(message.author))
@@ -175,6 +197,9 @@ async def on_message(message):
                             await client.delete_message(shake3)
                             await normal_caught()
                             log_caught()
+                            owner = message.author.id
+                            params = (pokechoice, type, level, cp, IV, attack, defense, hp, owner)
+                            store_pokemon(params)
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
                 elif 31 <= throw_rate <= 75:
@@ -206,6 +231,9 @@ async def on_message(message):
                             await client.delete_message(shake3)
                             await normal_caught()
                             log_caught()
+                            owner = message.author.id
+                            params = (pokechoice, type, level, cp, IV, attack, defense, hp, owner)
+                            store_pokemon(params)
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
                 elif throw_rate >= 76:
@@ -237,6 +265,9 @@ async def on_message(message):
                             await client.delete_message(shake3)
                             await normal_caught()
                             log_caught()
+                            owner = message.author.id
+                            params = (pokechoice, type, level, cp, IV, attack, defense, hp, owner)
+                            store_pokemon(params)
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
         else:
@@ -299,6 +330,9 @@ async def on_message(message):
                             await client.delete_message(shake3)
                             await shiny_caught()
                             log_caught()
+                            owner = message.author.id
+                            params = (pokechoice, type, level, cp, IV, attack, defense, hp, owner)
+                            store_pokemon(params)
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
                 elif 31 <= throw_rate <= 75:
@@ -330,6 +364,9 @@ async def on_message(message):
                             await client.delete_message(shake3)
                             await shiny_caught()
                             log_caught()
+                            owner = message.author.id
+                            params = (pokechoice, type, level, cp, IV, attack, defense, hp, owner)
+                            store_pokemon(params)
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
                 elif throw_rate >= 76:
@@ -361,6 +398,9 @@ async def on_message(message):
                             await client.delete_message(shake3)
                             await shiny_caught()
                             log_caught()
+                            owner = message.author.id
+                            params = (pokechoice, type, level, cp, IV, attack, defense, hp, owner)
+                            store_pokemon(params)
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
     if message.content.startswith("$hatch"):
@@ -378,13 +418,13 @@ async def on_message(message):
             embed_hatch = discord.Embed(
                 title= message.author.name + " has hatched a " + str(pokehatch) + "!",
                 description="Name: " + str(pokehatch) + ".\nLevel: " + str(hatch_level) + "\nCP: " + str(hatch_cp) + "\nIV: " + str(round(hatch_IV, 1)) + "% (" + str(hatch_attack) + "/" + str(hatch_defense) + "/" + str(hatch_hp) + ")",color=0x20ef25)
-            embed_hatch.set_thumbnail(url="https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/" + str(pokehatch).lower() + ".png")
+            embed_hatch.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(pokehatch).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_hatch)
         async def hatch_shiny():
             embed_shiny_hatch = discord.Embed(
                 title= message.author.name + " has hatched a shiny " + str(pokehatch) + "!",
                 description="Name: Shiny " + str(pokehatch) + ".\nLevel: " + str(hatch_level) + "\nCP: " + str(hatch_cp) + "\nIV: " + str(round(hatch_IV, 1)) + "% (" + str(hatch_attack) + "/" + str(hatch_defense) + "/" + str(hatch_hp) + ")", color=0x20ef25)
-            embed_shiny_hatch.set_thumbnail(url="https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/shiny/" + str(pokehatch).lower() + ".png")
+            embed_shiny_hatch.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(pokehatch).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_shiny_hatch)
         hatch = message.author.mention + " has hatched a " + str(pokehatch) + "!\nYour " + str(pokehatch) + " has an IV of " + str(round(hatch_IV, 2)) + "% and is level " + str(hatch_level) + "!\nCP: " + str(hatch_cp) + "\nIndividual Values:\nAttack: " + str(hatch_attack) + "\nDefense: " + str(hatch_defense) + "\nHP: " + str(hatch_hp)
         await client.send_message(message.channel, message.author.name + " incubated an egg....")
@@ -456,25 +496,25 @@ async def on_message(message):
             embed_legendary_caught = discord.Embed(
                 title= message.author.name + " has caught the legendary " + str(leg_choice) + "!",
                 description="Your " + str(leg_choice) + " has an IV of " + str(round(leg_iv, 2)) + "% and is level " + str(leg_level) + "!\nCP: " + str(leg_cp) + "\nIndividual Values:\nAttack: " + str(leg_attack) + "\nDefense: " + str(leg_defense) + "\nHP: " + str(leg_hp), color=0x20ef25)
-            embed_legendary_caught.set_thumbnail(url="https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/" + str(leg_choice).lower() + ".png")
+            embed_legendary_caught.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_caught)
         async def legendary_fled():
             embed_legendary_fled = discord.Embed(
                 title= "The " + str(leg_choice) + " escaped!",
                 description=message.author.name + " battled hard, but could not catch the legendary pokemon!", color=0xef101e)
-            embed_legendary_fled.set_thumbnail(url="https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/" + str(leg_choice).lower() + ".png")
+            embed_legendary_fled.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_fled)
         async def legendary_shiny_caught():
             embed_legendary_shiny_caught = discord.Embed(
                 title= message.author.name + " has caught the shiny " + str(leg_choice) + "!",
                 description="Your " + str(leg_choice) + " has an IV of " + str(round(leg_iv, 2)) + "% and is level " + str(leg_level) + "!\nCP: " + str(leg_cp) + "\nIndividual Values:\nAttack: " + str(leg_attack) + "\nDefense: " + str(leg_defense) + "\nHP: " + str(leg_hp), color=0x20ef25)
-            embed_legendary_shiny_caught.set_thumbnail(url="https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/shiny/" + str(leg_choice).lower() + ".png")
+            embed_legendary_shiny_caught.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_shiny_caught)
         async def legendary_shiny_fled():
             embed_legendary_shiny_fled = discord.Embed(
                 title= "The shiny " + str(leg_choice) + " escaped!",
                 description=message.author.name + " battled hard, but could not catch the legendary pokemon!", color=0xef101e)
-            embed_legendary_shiny_fled.set_thumbnail(url="https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/shiny/" + str(leg_choice).lower() + ".png")
+            embed_legendary_shiny_fled.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_shiny_fled)
         async def leg_capture():
             if shiny_or_not <= 96:
@@ -527,13 +567,13 @@ async def on_message(message):
             embed_legendary_normal_spawn = discord.Embed(
                 title= leg_choice,
                 description="CP: " + str(raid_boss_cp(find_pokemon_id(leg_choice), 5)) + "\nThe legendary pokemon " + str(leg_choice) + " has appeared\nand is ready for battle! Goodluck, trainer!", color=0x20ef25)
-            embed_legendary_normal_spawn.set_thumbnail(url="https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/" + str(leg_choice).lower() + ".png")
+            embed_legendary_normal_spawn.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_normal_spawn)
         async def legendary_shiny_spawn():
             embed_legendary_shiny_spawn = discord.Embed(
                 title= "Shiny " + leg_choice,
                 description= "CP: " + str(raid_boss_cp(find_pokemon_id(leg_choice), 5)) + "\nThe shiny legendary " + str(leg_choice) + " has appeared\nand is ready for battle! Goodluck, trainer!", color=0x20ef25)
-            embed_legendary_shiny_spawn.set_thumbnail(url="https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/shiny/" + str(leg_choice).lower() + ".png")
+            embed_legendary_shiny_spawn.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_shiny_spawn)
         if shiny_or_not <= 96:
             await legendary_normal_spawn()
@@ -574,13 +614,55 @@ async def on_message(message):
                                 if client.wait_for_message(author=message.author, content="$catch"):
                                     message = await client.wait_for_message(author=message.author, check=leg_catch)
                                     await leg_capture()
+    if message.content.startswith('$mydex 90'):
+        owner = message.author.id
+        query = 'SELECT * FROM pokemon WHERE iv >= 90 AND owner=? ORDER BY date(added)'
+        s = ''
+        n = 1
+        for p in cursor.execute(query, (owner,)):
+            s += '#' + str(n) + ". `" + p[1] + "` Type: `" + p[2] + "` Level: `" + str(p[3]) + "` CP: `" + str(p[4]) + "` IV: `" + str(round(int(p[5]), 1)) + "% (" + str(p[6]) + "/" + str(p[7]) + "/" + str(p[8]) + ")`\n    Caught on: " + p[9] + "\n"
+            n += 1
+        embed = discord.Embed(
+            title='Last 5 90% Pokemon',
+            description=s, color=0x20ef25
+        )
+        await client.send_message(message.channel, embed=embed)
+    if message.content.startswith('$mydex all'):
+        owner = message.author.id
+        query = 'SELECT * FROM pokemon WHERE owner=? ORDER BY date(added)'
+        s = ''
+        n = 1
+        for p in cursor.execute(query, (owner,)):
+            s += '#' + str(n)+ ". `" + p[1] + "` Type: `" + p[2] + "` Level: `" + str(p[3]) + "` CP: `" + str(p[4]) + "` IV: `" + str(round(int(p[5]), 1)) + "% (" + str(p[6]) + "/" + str(p[7]) + "/" + str(p[8]) + ")`\n    Caught on: " + p[9]+ "\n"
+            n += 1
+        embed = discord.Embed(
+            title='Last 5 Pokemon',
+            description=s, color=0x20ef25
+        )
+        await client.send_message(message.channel, embed=embed)
+    if message.content.startswith('$mydex shiny'):
+        owner = message.author.id
+        query = 'SELECT * FROM pokemon WHERE type=\'Shiny\' AND owner=? ORDER BY date(added)'
+        s = ''
+        n = 1
+        for p in cursor.execute(query, (owner,)):
+            s += '#' + str(n)+ ". `" + p[1] + "` Type: `" + p[2] + "` Level: `" + str(p[3]) + "` CP: `" + str(p[4]) + "` IV: `" + str(round(int(p[5]), 1)) + "% (" + str(p[6]) + "/" + str(p[7]) + "/" + str(p[8]) + ")`\n    Caught on: " + p[9]+ "\n"
+            n += 1
+        embed = discord.Embed(
+            title='Last 5 Shiny Pokemon',
+            description=s, color=0x20ef25
+        )
+        await client.send_message(message.channel, embed=embed)
+
+
+
     if client.wait_for_message(author=None, content="$help"):
         def help_check(msg):
             return msg.content.startswith("$help")
         message = await client.wait_for_message(author=message.author, check=help_check)
         embed_help = discord.Embed(
             title = "Help",
-            description = ("Welcome to PokeBot v3.3.2!\n\nPokemon will randomly appear in chat, to catch them, simply type $throw to throw a pokeball!\nIV's and Level follow the style of Pokemon GO!\n\nWant to hatch a pokemon? Simply type $hatch. IV's and Level will also follow Pokemon GO Egg hatch mechanics.\n\nIf you'd like to raid against a legendary, simply type $raid to get started!\n\nWant to report a bug? Message 1447xRK!\n\n*no copyright infringment intended with images, they do not belong to me*"),
+            description = ("Welcome to PokeBot v3.2.2!\n\nPokemon will randomly appear in chat, to catch them, simply type $throw to throw a pokeball!\nIV's and Level follow the style of Pokemon GO!\n\nWant to hatch a pokemon? Simply type $hatch. IV's and Level will also follow Pokemon GO Egg hatch mechanics.\n\nIf you'd like to raid against a legendary, simply type $raid to get started!\n\nWant to report a bug? Message 1447xRK!\n\n*no copyright infringment intended with images, they do not belong to me*"),
             color = 3447003,
         )
         await client.send_message(message.channel, embed=embed_help)
