@@ -110,14 +110,14 @@ async def on_message(message):
                 title="You rolled a hundo!",
                 description="User: " + str(message.author.name) + "\n\nEncounters before 100% encounter:\n```" + str(roll_count) + '```Pokemon rolled: ```' + str(hundochoice) +
                             '``` IV: 100% (15/15/15)', color=3447003)
-            hundo_poke.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(hundochoice).lower() + ".gif")
+            hundo_poke.set_image(url="http://www.pokestadium.com/sprites/xy/" + str(hundochoice).lower() + ".gif")
             await client.send_message(message.channel, embed=hundo_poke)
         async def shiny_hundo():
             shiny_hundo = discord.Embed(
                 title="You rolled a SHINY hundo!",
                 description="User: " + str(message.author.name) + "\n\nEncounters before 100% encounter:\n```" + str(roll_count) + '```Shiny pokemon rolled: ```' + str(hundochoice) +
                             '``` IV: 100% (15/15/15)', color=3447003)
-            shiny_hundo.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(hundochoice).lower() + ".gif")
+            shiny_hundo.set_image(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(hundochoice).lower() + ".gif")
             await client.send_message(message.channel, embed=shiny_hundo)
         if random.randint(1,300) <= 290:
             await hundo_poke()
@@ -149,7 +149,7 @@ async def on_message(message):
                 embed_spawn = discord.Embed(
                     title="A wild " + str(pokechoice) + " has appeared!",
                     description="CP: " + str(cp) + "\nTo catch the wild pokemon, type $throw", color = 3447003)
-                embed_spawn.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(pokechoice).lower() + ".gif")
+                embed_spawn.set_image(url="http://www.pokestadium.com/sprites/xy/" + str(pokechoice).lower() + ".gif")
                 await client.send_message(message.channel, embed=embed_spawn)
             await spawn_pokes()
             if client.wait_for_message(author=None, content="$throw"):
@@ -160,13 +160,13 @@ async def on_message(message):
                     embed_normal_caught = discord.Embed(
                         title= message.author.name + " caught the wild " + str(pokechoice) + "!",
                         description="Name: " + str(pokechoice) + ".\nLevel: "+ str(level) + "\nCP: " + str(cp) + "\nIV: " + str(round(IV, 1)) + "% (" + str(attack) + "/" + str(defense) + "/" + str(hp) + ")", color=0x20ef25)
-                    embed_normal_caught.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(pokechoice).lower() + ".gif")
+                    embed_normal_caught.set_image(url="http://www.pokestadium.com/sprites/xy/" + str(pokechoice).lower() + ".gif")
                     await client.send_message(message.channel, embed=embed_normal_caught)
                 async def normal_fled():
                     embed_normal_fled = discord.Embed(
                         title= "The wild " + str(pokechoice) + " has fled!",
                         description=message.author.name + " tried to catch the wild " + str(pokechoice) + ", but it has ran away!", color=0xef101e)
-                    embed_normal_fled.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(pokechoice).lower() + ".gif")
+                    embed_normal_fled.set_image(url="http://www.pokestadium.com/sprites/xy/" + str(pokechoice).lower() + ".gif")
                     await client.send_message(message.channel, embed=embed_normal_fled)
                 if throw_rate <= 30:
                     print('excellent throw triggered for ' + str(message.author))
@@ -275,7 +275,7 @@ async def on_message(message):
                 embed_shiny_spawn = discord.Embed(
                     title="A shiny " + str(pokechoice) + " has appeared!",
                     description="CP: " + str(cp) + "\nTo catch the wild pokemon, type $throw", color = 3447003)
-                embed_shiny_spawn.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(pokechoice).lower() + ".gif")
+                embed_shiny_spawn.set_image(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(pokechoice).lower() + ".gif")
                 await client.send_message(message.channel, embed=embed_shiny_spawn)
             await spawn_shiny_pokes()
             if client.wait_for_message(author=None, content="$throw"):
@@ -293,13 +293,13 @@ async def on_message(message):
                     embed_shiny_caught = discord.Embed(
                         title= message.author.name + " caught the shiny " + str(pokechoice) + "!",
                         description="Name: Shiny " + str(pokechoice) + ".\nLevel: " + str(level) + "\nCP: " + str(cp) + "\nIV: " + str(round(IV, 1)) + "% (" + str(attack) + "/" + str(defense) + "/" + str(hp) + ")", color=0x20ef25)
-                    embed_shiny_caught.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(pokechoice).lower() + ".gif")
+                    embed_shiny_caught.set_image(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(pokechoice).lower() + ".gif")
                     await client.send_message(message.channel, embed=embed_shiny_caught)
                 async def shiny_fled():
                     embed_shiny_fled = discord.Embed(
                         title= "The shiny " + str(pokechoice) + " has fled!",
                         description=message.author.name + " tried to catch the shiny " + str(pokechoice) + ", but it has ran away!", color=0xef101e)
-                    embed_shiny_fled.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(pokechoice).lower() + ".gif")
+                    embed_shiny_fled.set_image(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(pokechoice).lower() + ".gif")
                     await client.send_message(message.channel, embed=embed_shiny_fled)
                 if throw_rate <= 30:
                     print('excellent throw triggered for ' + str(message.author))
@@ -418,13 +418,13 @@ async def on_message(message):
             embed_hatch = discord.Embed(
                 title= message.author.name + " has hatched a " + str(pokehatch) + "!",
                 description="Name: " + str(pokehatch) + ".\nLevel: " + str(hatch_level) + "\nCP: " + str(hatch_cp) + "\nIV: " + str(round(hatch_IV, 1)) + "% (" + str(hatch_attack) + "/" + str(hatch_defense) + "/" + str(hatch_hp) + ")",color=0x20ef25)
-            embed_hatch.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(pokehatch).lower() + ".gif")
+            embed_hatch.set_image(url="http://www.pokestadium.com/sprites/xy/" + str(pokehatch).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_hatch)
         async def hatch_shiny():
             embed_shiny_hatch = discord.Embed(
                 title= message.author.name + " has hatched a shiny " + str(pokehatch) + "!",
                 description="Name: Shiny " + str(pokehatch) + ".\nLevel: " + str(hatch_level) + "\nCP: " + str(hatch_cp) + "\nIV: " + str(round(hatch_IV, 1)) + "% (" + str(hatch_attack) + "/" + str(hatch_defense) + "/" + str(hatch_hp) + ")", color=0x20ef25)
-            embed_shiny_hatch.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(pokehatch).lower() + ".gif")
+            embed_shiny_hatch.set_image(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(pokehatch).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_shiny_hatch)
         hatch = message.author.mention + " has hatched a " + str(pokehatch) + "!\nYour " + str(pokehatch) + " has an IV of " + str(round(hatch_IV, 2)) + "% and is level " + str(hatch_level) + "!\nCP: " + str(hatch_cp) + "\nIndividual Values:\nAttack: " + str(hatch_attack) + "\nDefense: " + str(hatch_defense) + "\nHP: " + str(hatch_hp)
         await client.send_message(message.channel, message.author.name + " incubated an egg....")
@@ -496,25 +496,25 @@ async def on_message(message):
             embed_legendary_caught = discord.Embed(
                 title= message.author.name + " has caught the legendary " + str(leg_choice) + "!",
                 description="Your " + str(leg_choice) + " has an IV of " + str(round(leg_iv, 2)) + "% and is level " + str(leg_level) + "!\nCP: " + str(leg_cp) + "\nIndividual Values:\nAttack: " + str(leg_attack) + "\nDefense: " + str(leg_defense) + "\nHP: " + str(leg_hp), color=0x20ef25)
-            embed_legendary_caught.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(leg_choice).lower() + ".gif")
+            embed_legendary_caught.set_image(url="http://www.pokestadium.com/sprites/xy/" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_caught)
         async def legendary_fled():
             embed_legendary_fled = discord.Embed(
                 title= "The " + str(leg_choice) + " escaped!",
                 description=message.author.name + " battled hard, but could not catch the legendary pokemon!", color=0xef101e)
-            embed_legendary_fled.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(leg_choice).lower() + ".gif")
+            embed_legendary_fled.set_image(url="http://www.pokestadium.com/sprites/xy/" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_fled)
         async def legendary_shiny_caught():
             embed_legendary_shiny_caught = discord.Embed(
                 title= message.author.name + " has caught the shiny " + str(leg_choice) + "!",
                 description="Your " + str(leg_choice) + " has an IV of " + str(round(leg_iv, 2)) + "% and is level " + str(leg_level) + "!\nCP: " + str(leg_cp) + "\nIndividual Values:\nAttack: " + str(leg_attack) + "\nDefense: " + str(leg_defense) + "\nHP: " + str(leg_hp), color=0x20ef25)
-            embed_legendary_shiny_caught.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(leg_choice).lower() + ".gif")
+            embed_legendary_shiny_caught.set_image(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_shiny_caught)
         async def legendary_shiny_fled():
             embed_legendary_shiny_fled = discord.Embed(
                 title= "The shiny " + str(leg_choice) + " escaped!",
                 description=message.author.name + " battled hard, but could not catch the legendary pokemon!", color=0xef101e)
-            embed_legendary_shiny_fled.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(leg_choice).lower() + ".gif")
+            embed_legendary_shiny_fled.set_image(url="http://www.pokestadium.com/sprites/xy/shiny/" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_shiny_fled)
         async def leg_capture():
             if shiny_or_not <= 96:
@@ -567,13 +567,13 @@ async def on_message(message):
             embed_legendary_normal_spawn = discord.Embed(
                 title= leg_choice,
                 description="CP: " + str(raid_boss_cp(find_pokemon_id(leg_choice), 5)) + "\nThe legendary pokemon " + str(leg_choice) + " has appeared\nand is ready for battle! Goodluck, trainer!", color=0x20ef25)
-            embed_legendary_normal_spawn.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/" + str(leg_choice).lower() + ".gif")
+            embed_legendary_normal_spawn.set_image(url="http://www.pokestadium.com/sprites/xy/" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_normal_spawn)
         async def legendary_shiny_spawn():
             embed_legendary_shiny_spawn = discord.Embed(
                 title= "Shiny " + leg_choice,
                 description= "CP: " + str(raid_boss_cp(find_pokemon_id(leg_choice), 5)) + "\nThe shiny legendary " + str(leg_choice) + " has appeared\nand is ready for battle! Goodluck, trainer!", color=0x20ef25)
-            embed_legendary_shiny_spawn.set_thumbnail(url="http://www.pokestadium.com/sprites/xy/shiny" + str(leg_choice).lower() + ".gif")
+            embed_legendary_shiny_spawn.set_image(url="http://www.pokestadium.com/sprites/xy/shiny" + str(leg_choice).lower() + ".gif")
             await client.send_message(message.channel, embed=embed_legendary_shiny_spawn)
         if shiny_or_not <= 96:
             await legendary_normal_spawn()
