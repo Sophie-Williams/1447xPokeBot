@@ -178,7 +178,7 @@ async def on_message(message):
                     await client.delete_message(excellent_throw)
                     shake1 = await client.send_file(message.channel, "images/shake.png")
                     await asyncio.sleep(1)
-                    if random.randint(1, 100) < 3:
+                    if random.randint(1, 100) < 2:
                         await client.delete_message(shake1)
                         await normal_fled()
                         log_fled()
@@ -212,7 +212,7 @@ async def on_message(message):
                     await client.delete_message(great_throw)
                     shake1 = await client.send_file(message.channel, "images/shake.png")
                     await asyncio.sleep(1)
-                    if random.randint(1, 100) < 8:
+                    if random.randint(1, 100) < 5:
                         await client.delete_message(shake1)
                         await normal_fled()
                         log_fled()
@@ -220,7 +220,7 @@ async def on_message(message):
                         await client.delete_message(shake1)
                         shake2 = await client.send_file(message.channel, "images/shake2.png")
                         await asyncio.sleep(1)
-                        if random.randint(1, 100) < 6:
+                        if random.randint(1, 100) < 3:
                             await client.delete_message(shake2)
                             await normal_fled()
                             log_fled()
@@ -246,7 +246,7 @@ async def on_message(message):
                     await client.delete_message(nice_throw)
                     shake1 = await client.send_file(message.channel, "images/shake.png")
                     await asyncio.sleep(1)
-                    if random.randint(1, 100) < 9:
+                    if random.randint(1, 100) < 6:
                         await client.delete_message(shake1)
                         await normal_fled()
                         log_fled()
@@ -254,7 +254,7 @@ async def on_message(message):
                         await client.delete_message(shake1)
                         shake2 = await client.send_file(message.channel, "images/shake2.png")
                         await asyncio.sleep(1)
-                        if random.randint(1, 100) < 8:
+                        if random.randint(1, 100) < 4:
                             await client.delete_message(shake2)
                             await normal_fled()
                             log_fled()
@@ -311,7 +311,7 @@ async def on_message(message):
                     await client.delete_message(excellent_throw)
                     shake1 = await client.send_file(message.channel, "images/shake.png")
                     await asyncio.sleep(1)
-                    if random.randint(1, 100) < 3:
+                    if random.randint(1, 100) < 2:
                         await client.delete_message(shake1)
                         await shiny_fled()
                         log_fled()
@@ -345,7 +345,7 @@ async def on_message(message):
                     await client.delete_message(great_throw)
                     shake1 = await client.send_file(message.channel, "images/shake.png")
                     await asyncio.sleep(1)
-                    if random.randint(1, 100) < 8:
+                    if random.randint(1, 100) < 5:
                         await client.delete_message(shake1)
                         await shiny_fled()
                         log_fled()
@@ -353,7 +353,7 @@ async def on_message(message):
                         await client.delete_message(shake1)
                         shake2 = await client.send_file(message.channel, "images/shake2.png")
                         await asyncio.sleep(1)
-                        if random.randint(1, 100) < 6:
+                        if random.randint(1, 100) < 3:
                             await client.delete_message(shake2)
                             await shiny_fled()
                             log_fled()
@@ -379,7 +379,7 @@ async def on_message(message):
                     await client.delete_message(nice_throw)
                     shake1 = await client.send_file(message.channel, "images/shake.png")
                     await asyncio.sleep(1)
-                    if random.randint(1, 100) < 9:
+                    if random.randint(1, 100) < 6:
                         await client.delete_message(shake1)
                         await shiny_fled()
                         log_fled()
@@ -387,7 +387,7 @@ async def on_message(message):
                         await client.delete_message(shake1)
                         shake2 = await client.send_file(message.channel, "images/shake2.png")
                         await asyncio.sleep(1)
-                        if random.randint(1, 100) < 8:
+                        if random.randint(1, 100) < 4:
                             await client.delete_message(shake2)
                             await shiny_fled()
                             log_fled()
