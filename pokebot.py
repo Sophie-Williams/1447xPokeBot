@@ -404,6 +404,7 @@ async def on_message(message):
                             if IV > 90:
                                 await client.send_message(message.channel, highiv)
     if message.content.startswith("$hatch"):
+        print(str(message.author.name) + ' began to hatch a Pokemon')
         pokehatch = (random.choice(pokemans))
         # print(pokehatch) Debug
         pokeid = find_pokemon_id(pokehatch)
@@ -452,11 +453,13 @@ async def on_message(message):
                     await asyncio.sleep(0.75)
                     if random.randint(1,100) <= 97:
                         await hatch_pokes()
+                        print(str(message.author.name) + ' hatched a ' + str(pokehatch))
                         await asyncio.sleep(0.5)
                         await client.send_message(message.channel, "To hatch another pokemon, type `$hatch`")
                         await asyncio.sleep(0.5)
                     else:
                         await hatch_shiny()
+                        print(str(message.author.name) + ' hatched a shiny ' + str(pokehatch))
                         await asyncio.sleep(0.5)
                         await client.send_message(message.channel, "To hatch another pokemon, type `$hatch`")
                         await asyncio.sleep(0.5)
