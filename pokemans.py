@@ -5,7 +5,7 @@ pokemans =  (
              "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto",
              "Pidgeot", "Rattata", "Raticate", "Spearow", "Fearow",
              "Ekans", "Arbok", "Pikachu", "Raichu", "Sandshrew",
-             "Sandslash", "Nidoran-F","Nidoran-M" "Nidorino", "Nidorina", "Nidoking",
+             "Sandslash", "Nidoran-F","Nidoran-M", "Nidorino", "Nidorina", "Nidoking",
              "Nidoqueen", "Clefairy", "Clefable", "Vulpix", "Ninetales",
              "Jigglypuff","Wigglytuff","Zubat","Golbat","Oddish","Gloom",
              "Vileplume","Paras","Parasect","Venonat","Venomoth","Diglett",
@@ -114,7 +114,7 @@ test_pokemans = (
              "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto",
              "Pidgeot", "Rattata", "Raticate", "Spearow", "Fearow",
              "Ekans", "Arbok", "Pikachu", "Raichu", "Sandshrew",
-             "Sandslash", "Nidoran-F","Nidoran-M" "Nidorino", "Nidorina", "Nidoking",
+             "Sandslash", "Nidoran-F","Nidoran-M", "Nidorino", "Nidorina", "Nidoking",
              "Nidoqueen", "Clefairy", "Clefable", "Vulpix", "Ninetales",
              "Jigglypuff","Wigglytuff","Zubat","Golbat","Oddish", "Ho-Oh",
              "Dragonite"
