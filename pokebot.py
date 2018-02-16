@@ -659,13 +659,13 @@ async def on_message(message):
 
 
 
-    if client.wait_for_message(author=None, content="$help"):
+    if message.content.startswith("$help"):
         def help_check(msg):
             return msg.content.startswith("$help")
         message = await client.wait_for_message(author=message.author, check=help_check)
         embed_help = discord.Embed(
             title = "Help",
-            description = ("Welcome to PokeBot v3.2.2!\n\nPokemon will randomly appear in chat, to catch them, simply type $throw to throw a pokeball!\nIV's and Level follow the style of Pokemon GO!\n\nWant to hatch a pokemon? Simply type $hatch. IV's and Level will also follow Pokemon GO Egg hatch mechanics.\n\nIf you'd like to raid against a legendary, simply type $raid to get started!\n\nWant to report a bug? Message 1447xRK!\n\n*no copyright infringment intended with images, they do not belong to me*"),
+            description = ("Welcome to PokeBot v3.2.2!\n\nPokemon will randomly appear in chat, to catch them, simply type $throw to throw a pokeball! Alternatively, you can also `$search` for Pokémon!\nIV's and Level follow the style of Pokemon GO!\n\nWant to hatch a pokemon? Simply type $hatch. IV's and Level will also follow Pokemon GO Egg hatch mechanics.\n\nIf you'd like to raid against a legendary, simply type $raid to get started!\n\nWant to test your luck? To see how many encounters it would take before you ran into a 100% Pokemon, type `$100`\n\nWant to report a bug? Message 1447xRK!\n\n*no copyright infringment intended with images, they do not belong to me*"),
             color = 3447003,
         )
         await client.send_message(message.channel, embed=embed_help)
