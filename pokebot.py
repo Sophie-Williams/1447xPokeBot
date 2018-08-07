@@ -660,6 +660,8 @@ async def on_message(message):
 
 
     if message.content.startswith("$help"):
+        if message.author == client.user:
+            return
         def help_check(msg):
             return msg.content.startswith("$help")
         message = await client.wait_for_message(author=message.author, check=help_check)
